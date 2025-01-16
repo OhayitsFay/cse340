@@ -1,1 +1,59 @@
-<h1>Atuhu Favourite</h1>
+<h1 class="display-2">Welcome to CSE Motors!</h1>
+
+<!-- hero div -->
+<div id="hero-section">
+  <div id="banner-info">
+    <h2 class="display-3">DMC Delorean</h2>
+    <p>3 Cup holders</p>
+    <p>Superman doors</p>
+    <p>Fuzzy dice!</p>
+    <img id="own-btn" src="/images/site/own_today.png" alt="own today button">
+  </div>
+</div>
+
+  <!-- upgrades & review -->
+  <div id="upgrades-review">
+    <!-- upgrades -->
+    <% 
+      let upgrades = [
+        {name: 'Flux Capacitor', image: '/images/upgrades/flux-cap.png'},
+        {name: 'Flame Decals', image: '/images/upgrades/flame.jpg'},
+        {name: 'Bumper Stickers', image: '/images/upgrades/bumper_sticker.jpg'},
+        {name: 'Hub Caps', image: '/images/upgrades/hub-cap.jpg'},
+      ]
+    %>
+
+  <div class="col">
+    <h2 class="display-3">Delorean Upgrades</h2>
+    <div id="upgrades-grid">
+      <% for (const upgrade of upgrades) { %>
+        <div>
+          <div class="card">
+            <img src="<%= upgrade.image %>" alt="<%= upgrade.name %>">
+          </div>
+          <a href="#"><%= upgrade.name %></a>
+        </div>
+      <% } %> 
+    </div>
+  </div>
+
+  <!-- reviews -->
+  <% 
+  let reviews = [
+    '"So fast it\'s almost like travelling in time." (4/5)',
+    '"Coolest ride on the road." (4/5)',
+    '"I\'m feeling McFly!" (5/5)',
+    '"The most futuristic ride of our day." (4.5/5)',
+    '"80\'s livin and I love it!." (5/5)',
+  ]
+  %>
+  <div class="col">
+  <h2 class="display-3">DMC Delorean Reviews</h2>
+  <ul id="reviews">
+    <% for (const review of reviews) {%>
+      <li><%= review %></li>
+    <%}%>
+  </ul>
+  </div>
+
+ </div>
