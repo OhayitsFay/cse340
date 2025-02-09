@@ -17,3 +17,6 @@ node_modules
 
 #.README values not to be shared
 README.md
+
+#settings for render to connect to the local server
+.vscode
