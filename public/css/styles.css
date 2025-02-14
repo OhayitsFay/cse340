@@ -1,4 +1,4 @@
-/*** Change Box Model ****/
+/* Change Box Model ****/
 *,
 *:before,
 *:after {
@@ -35,6 +35,16 @@ nav > ul {
   background-color: black;
   color: white;
 }
+li > a {
+  color: white;
+  text-decoration: none;
+}
+li > a:hover {
+  color: black;
+  background-color: white;
+  padding: 0.2rem 0.5rem;
+}
+
 
 #hero-section {
   background-image: url("/images/vehicles/delorean-tn.jpg");
@@ -104,6 +114,12 @@ nav > ul {
 .text-center {
  text-align: center;
 }
+.col {
+  flex: 1;
+}
+.col-2 {
+  flex: 2;
+}
 
 
 @media screen and (min-width: 768px) {
@@ -155,10 +171,6 @@ nav > ul {
     align-items: center;
     background-color: #4986f7;
     height: 90px;
-  }
-
-  .col {
-    flex: 1;
   }
 
   #reviews {
@@ -228,6 +240,10 @@ hr {
 
 #mileage-tag {
   background-color: white;
+}
+
+#notice {
+  color: red;
 }
 
 

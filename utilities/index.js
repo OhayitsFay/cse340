@@ -1,9 +1,9 @@
 const invModel = require("../models/inventoryModel")
 const Util = {}
 
-/* ************************
+/* ************
  * Constructs the nav HTML unordered list
- ************************** */
+ ************ */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
   let list = "<ul>"
@@ -24,9 +24,9 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-/* **************************************
+/* ************
 * Build the classification view HTML
-* ************************************ */
+* *************** */
 Util.buildClassificationGrid = async function(data){
   let grid
   if(data.length > 0){
@@ -56,12 +56,92 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+/* **************
+* Build the specific inventory view Template
+* ************ */
+Util.createSpecificInventoryDetailsTemplate = async function(data) {
+  let template = `
+    <div id="details-container">
+      <div id="image-container" class="col">
+        <img src="${data.inv_image}" alt="${data.inv_make} - ${data.inv_model} picture" id="main-img"/>
+      </div>
+      <div id="info-card" class="col">
+        <h2>${data.inv_year} ${data.inv_make} ${data.inv_model}, ${data.inv_color}</h2>
+        <div id="price-banner">
+          <div id="section-mileage" class="col">
+            <span id="mileage-tag">MILEAGE</span><br/>
+            <b>${Intl.NumberFormat().format(data.inv_miles)}</b>
+          </div>
+          <h3 class="col-2">No-Haggle Price</h3>
+          <div class="col">
+          <h3>${Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(data.inv_price)}</h3>
+          <p>Does not include taxes.</p>
+          <p>ESTIMATE PAYMENTS</p>
+          </div>
+        </div>
+        <p><b>Make:</b> ${data.inv_make}</p>
+        <p><b>Model:</b> ${data.inv_model}</p>
+        <p><b>Color:</b> ${data.inv_color}</p>
+        <p><b>Mileage:</b> ${data.inv_miles}</p>
+        <p><b>Description:</b><br>${data.inv_description}</p>
+      </div>
+    </div>
+  `
+  return template;
+}
 
-/* ****************************************
+/* **
+* Classification list dropdown.
+* ** */
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications()
+  let classificationList =
+    '<select name="classification_id" id="classificationList">'
+  classificationList += "<option value=''>Choose a Classification</option>"
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"'
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
+}
+
+ /* ******
+ *  Check Login
+ * **** */
+ Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("warningDetails", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
+
+/* ******
+*  Only Allow Administrators 'Staff'
+* **** */
+Util.isAdmin = (req, res, next) => {
+  const {loggedin, accountData} = res.locals
+  if (loggedin && accountData && (accountData.account_type === 'Admin' || accountData.account_type === 'Employee')) {
+    next()
+  } else {
+    req.flash("warningDetails", "Please login as an administrator to access the page.")
+    return res.redirect("/account/login")
+  }
+}
+
+/* ***********
  * Middleware For Handling Errors
  * Wrap other function in this for 
  * General Error Handling
- **************************************** */
+ ************* */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = Util
