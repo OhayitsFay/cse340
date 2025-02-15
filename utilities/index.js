@@ -1,9 +1,11 @@
 const invModel = require("../models/inventoryModel")
 const Util = {}
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
-/* ************
+/* **
  * Constructs the nav HTML unordered list
- ************ */
+ ** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
   let list = "<ul>"
@@ -24,9 +26,9 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-/* ************
+/* **
 * Build the classification view HTML
-* *************** */
+* ** */
 Util.buildClassificationGrid = async function(data){
   let grid
   if(data.length > 0){
@@ -36,8 +38,8 @@ Util.buildClassificationGrid = async function(data){
       grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
       + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
       + 'details"><img src="' + vehicle.inv_thumbnail 
-      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-      +' on CSE Motors" /></a>'
+      +'" alt=" '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +'" /></a>'
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
@@ -56,15 +58,18 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
-/* **************
+
+/* **
 * Build the specific inventory view Template
-* ************ */
+* ** */
 Util.createSpecificInventoryDetailsTemplate = async function(data) {
+  const commentsLink = `/inv/comments/${data.inv_id}`
   let template = `
     <div id="details-container">
       <div id="image-container" class="col">
         <img src="${data.inv_image}" alt="${data.inv_make} - ${data.inv_model} picture" id="main-img"/>
       </div>
+
       <div id="info-card" class="col">
         <h2>${data.inv_year} ${data.inv_make} ${data.inv_model}, ${data.inv_color}</h2>
         <div id="price-banner">
@@ -72,7 +77,9 @@ Util.createSpecificInventoryDetailsTemplate = async function(data) {
             <span id="mileage-tag">MILEAGE</span><br/>
             <b>${Intl.NumberFormat().format(data.inv_miles)}</b>
           </div>
+
           <h3 class="col-2">No-Haggle Price</h3>
+
           <div class="col">
           <h3>${Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(data.inv_price)}</h3>
           <p>Does not include taxes.</p>
@@ -84,6 +91,7 @@ Util.createSpecificInventoryDetailsTemplate = async function(data) {
         <p><b>Color:</b> ${data.inv_color}</p>
         <p><b>Mileage:</b> ${data.inv_miles}</p>
         <p><b>Description:</b><br>${data.inv_description}</p>
+        <a href=${commentsLink}>View Comments</a>
       </div>
     </div>
   `
@@ -112,6 +120,31 @@ Util.buildClassificationList = async function (classification_id = null) {
   return classificationList
 }
 
+/* ******
+* Middleware to check token validity
+****** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+   jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+     if (err) {
+      req.flash("Please log in")
+      res.clearCookie("jwt")
+      return res.redirect("/account/login")
+     }
+     res.locals.accountData = accountData
+     res.locals.loggedin = 1
+     next()
+    })
+  } else {
+    res.locals.accountData = null
+    res.locals.loggedin = null
+    next()
+  }
+ }
+
  /* ******
  *  Check Login
  * **** */
@@ -137,11 +170,11 @@ Util.isAdmin = (req, res, next) => {
   }
 }
 
-/* ***********
+/* **
  * Middleware For Handling Errors
  * Wrap other function in this for 
  * General Error Handling
- ************* */
+ ** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = Util
