@@ -1,42 +1,36 @@
 ** ## Project Enhancement Details** 
 __Access to the project__
-1. When you open the product details page
-2. Below product description, there is view comments link
-3. On clicking, comments of the given vehicle show, the selected vehicle
-4. One can add their comment, which is a review of the vehicle
-5. One can view other comments and an average rating as well
-
-
+1. Navigate to the product details page.
+2. Below the product description, a "View Comments" link is available.
+3. Clicking the link displays all comments associated with the selected vehicle.
+4. Users can submit their own reviews in the form of comments.
+5. Other users' reviews, along with an average rating, are also visible.
 _____________________________________________________________________________________________________
-** # Project Enhancement Expectation**
-Explain how your enhancement will make use of each of the following:
-1. __Database Interaction:__
-First, I created a new table called comment with the following parameters:
-a. comment_id
-b. rating 
-c. comment_text
-d. timestamp
-e. vehicle_id
-f. commentator_id
-Second, I queried the new table by adding an async function in the inventory-model file.
+** # Project Enhancement Implementation**
+1. Database Integration
+A new table named comment was created with the following fields:
+i. comment_id (unique identifier for each comment)
+ii. rating (numeric value representing user rating)
+iii. comment_text (content of the user’s review)
+iv. timestamp (records when the comment was posted)
+v. vehicle_id (links the comment to a specific vehicle)
+vi. commentator_id (identifies the user who posted the comment)
+An asynchronous function was added to the inventory-model file to retrieve and manage data from this table.
 
-2. __New Model Behaviors:__
-- New SQL query for the comment was added to the inventory-model file 
+2. Updated Model Functionalities
+A new SQL query was implemented in the inventoryModel file to interact with the comment table.
 
-3. __New Controller Behaviors:__ 
-- In the invController file, a function for viewing comment and adding a new comment was added 
-- Post and Get routes were added in the inventoryRoute file 
+3. Updated Controller Functionalities
+The inventoryController file now includes functions for retrieving and submitting comments.
+Additional POST and GET routes were integrated into the inventoryRoute file for handling comment-related requests.
 
-4. __New Views:__ 
-- In Utilities root file, a comment link was added under the templates function 
-- An ejs comment file was added to the inventory folder and the code for displaying comment 
-to the client added 
+4. New User Interface Elements
+A comments link was appended to the templates function within the Utilities root file.
+A dedicated EJS file was introduced in the inventory directory to render comments for users.
 
-5. __Data Validation:__ 
--In ejs comment file added in the views, required was added for client side validation to prevent the 
-client from submitting empty comment 
-- A server side validation was added to return the error wit the necessary message to te client. 
-The function checkCommmentData was added for this purpose in the inventory-validation file 
+5. Input Validation
+Client-side validation was enforced in the EJS comment file using the required attribute to prevent empty submissions.
+Server-side validation was introduced to ensure data integrity, providing error messages when necessary. The checkCommentData function, added to the inventory-validation file, handles this.
 
-6. __Error Handling:__ 
-Middleware for handling error added 
+6. Error Handling
+Middleware for handling errors was implemented to improve system stability and provide meaningful feedback to users.

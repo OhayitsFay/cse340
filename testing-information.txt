@@ -1,27 +1,28 @@
 Information 1
 ----------------------------
-account_firstname: Basic
+account_firstname: Advanced
 account_lastname: Client
-account_email: basic@340.edu
-account_password: I@mABas1cCl!3nt
+account_email: advanced@470.edu
+account_password: Adv@ncedCl!3nt%
 
 Information 2
 ----------------------------
-account_firstname: Happy
-account_lastname: Employee
-account_email: happy@340.edu
-account_password: I@mAnEmpl0y33
+account_firstname: Standard
+account_lastname: Member
+account_email: standard@360.edu
+account_password: St@ndardM3mb3r$
 
 Information 3
 ----------------------------
-account_firstname: Manager
-account_lastname: User
-account_email: manager@340.edu
-account_password: I@mAnAdm!n1strat0r
+account_firstname: Elite
+account_lastname: Subscriber
+account_email: elite@520.edu
+account_password: El!t3Subscr!b3r&
 
 Information 4
 ----------------------------
-account_firstname: Soccer
-account_lastname: Tumandulo
-account_email: iamFanatic@340.edu
-account_password: I@mTum0lol1Client2
+account_firstname: Premium
+account_lastname: User
+account_email: premium@450.edu
+account_password: Pr3m!umAcc0unt#
+
