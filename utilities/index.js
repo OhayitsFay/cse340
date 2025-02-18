@@ -63,7 +63,7 @@ Util.buildClassificationGrid = async function(data){
 * Build the specific inventory view Template
 * ** */
 Util.createSpecificInventoryDetailsTemplate = async function(data) {
-  const commentsLink = `/inv/comments/${data.inv_id}`
+  const reviewsLink = `/inv/reviews/${data.inv_id}`
   let template = `
     <div id="details-container">
       <div id="image-container" class="col">
@@ -91,7 +91,7 @@ Util.createSpecificInventoryDetailsTemplate = async function(data) {
         <p><b>Color:</b> ${data.inv_color}</p>
         <p><b>Mileage:</b> ${data.inv_miles}</p>
         <p><b>Description:</b><br>${data.inv_description}</p>
-        <a href=${commentsLink}>View Comments</a>
+        <a href=${reviewsLink}>View Reviews</a>
       </div>
     </div>
   `
