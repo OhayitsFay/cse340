@@ -266,42 +266,42 @@ invCont.deleteInventory = async function(req, res, next) {
 
 
 /* *
- *  Comments View For Inventory
+ *  Review View For Inventory
  * ** */
-invCont.viewInventoryComments = async (req, res, next) => {
+invCont.viewInventoryReviews = async (req, res, next) => {
   const inv_id = parseInt(req.params.inv_id)
   let nav = await utilities.getNav()
   const inventory = await invModel.getInventoryById(inv_id)
   const title = `${inventory.inv_make} ${inventory.inv_model} ${inventory.inv_year}`
   const vehicleBanner = inventory.inv_image
-  const comments = await invModel.getComments(inv_id)
+  const reviews = await invModel.getReviews(inv_id)
   let averageRating = 0
-  if(comments.length > 0) {
+  if(reviews.length > 0) {
     averageRating = parseFloat(comments[0].average_rating).toFixed(1)
   }
-  res.render("./inventory/comments", {
+  res.render("./inventory/reviews", {
     nav,
     errors: null,
     title,
     vehicleBanner,
     averageRating,
-    comments,
+    reviews,
     vehicle_id: inventory.inv_id
   })
 }
 
 
 /* *
- *  Add comment
+ *  Add review
  * ** */
-invCont.addNewCommment = async function(req, res, next) {
+invCont.addNewReview = async function(req, res, next) {
   let message
   const {
-    rating, comment_text, vehicle_id, commentator_id
+    rating, review_text, vehicle_id, reviewer_id
   } = req.body
-  const data = await invModel.addComment(rating, comment_text, vehicle_id, commentator_id)
+  const data = await invModel.addReview(rating, review_text, vehicle_id, reviewer_id)
   if(data) {
-    message = `Comment added was added successfully`
+    message = `Review added was added successfully`
   } else {
     message = null
   }
@@ -310,19 +310,19 @@ invCont.addNewCommment = async function(req, res, next) {
   const inventory = await invModel.getInventoryById(inv_id)
   const title = `${inventory.inv_make} ${inventory.inv_model} ${inventory.inv_year}`
   const vehicleBanner = inventory.inv_image
-  const comments = await invModel.getComments(inv_id)
+  const reviews = await invModel.getReviews(inv_id)
   let averageRating = 0
-  if(comments.length > 0) {
-    averageRating = parseFloat(comments[0].average_rating).toFixed(1)
+  if(reviews.length > 0) {
+    averageRating = parseFloat(reviews[0].average_rating).toFixed(1)
   }
-  res.render('./inventory/comments', {
+  res.render('./inventory/reviews', {
     title,
     nav,
     message,
     errors: null,
     vehicleBanner,
     averageRating,
-    comments,
+    reviews,
     vehicle_id: inventory.inv_id
   })
 }

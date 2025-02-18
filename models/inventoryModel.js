@@ -133,39 +133,39 @@ try {
 /* *
 *  Get Comments For a Vehicle Item
 * ** */
-async function getComments(inv_id) {
+async function getReviews(inv_id) {
 try {
   const sql = `SELECT 
-                  c.comment_id AS comment_id,
-                  c.comment_text AS comment_text,
-                  c.rating AS comment_rating,
-                  c.timestamp,
+                  r.review_id AS review_id,
+                  r.review_text AS review_text,
+                  r.rating AS review_rating,
+                  r.timestamp,
                   i.inv_id AS inventory_id,
                   a.account_id AS account_id,
                   a.account_firstname AS firstname,
                   a.account_lastname AS lastname,
-                  AVG(c.rating) OVER (PARTITION BY c.vehicle_id) AS average_rating
-              FROM comment c
-              JOIN inventory i ON c.vehicle_id = i.inv_id
-              JOIN account a ON c.commentator_id = a.account_id
-              WHERE c.vehicle_id = $1;`
+                  AVG(r.rating) OVER (PARTITION BY r.vehicle_id) AS average_rating
+              FROM review r
+              JOIN inventory i ON r.vehicle_id = i.inv_id
+              JOIN account a ON r.reviewer_id = a.account_id
+              WHERE r.vehicle_id = $1;`
   const data = await pool.query(sql, [inv_id])
   return data.rows
 } catch (error) {
-  console.error("Get comments error: " + error)
+  console.error("Get review error: " + error)
 }
 }
 
-// add new comment
-async function addComment(rating, comment_text, vehicle_id, commentator_id) {
+// add new review
+async function addReview(rating, review_text, vehicle_id, reviewer_id) {
 try {
-  const data = await pool.query(`INSERT INTO public.comment (
-    rating, comment_text, vehicle_id, commentator_id
-    ) VALUES ($1, $2, $3, $4)`, [rating, comment_text, vehicle_id, commentator_id])
+  const data = await pool.query(`INSERT INTO public.review (
+    rating, review_text, vehicle_id, reviewer_id
+    ) VALUES ($1, $2, $3, $4)`, [rating, review_text, vehicle_id, reviewer_id])
   return data;
 } catch (error) {
-  console.error("addNewComment error" + error)
+  console.error("addNewReview error" + error)
 }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addNewClassification, addNewVehicle, checkExistingClassification, updateInventory, deleteInventoryItem, getComments, addComment};
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addNewClassification, addNewVehicle, checkExistingClassification, updateInventory, deleteInventoryItem, getReviews, addReview};

@@ -1,36 +1,36 @@
 ** ## Project Enhancement Details** 
 __Access to the project__
 1. Navigate to the product details page.
-2. Below the product description, a "View Comments" link is available.
-3. Clicking the link displays all comments associated with the selected vehicle.
-4. Users can submit their own reviews in the form of comments.
+2. Below the product description, a "View Reviews" link is available.
+3. Clicking the link displays all reviewss associated with the selected vehicle.
+4. Users can submit their own comments in the form of reviews.
 5. Other users' reviews, along with an average rating, are also visible.
 _____________________________________________________________________________________________________
 ** # Project Enhancement Implementation**
 1. Database Integration
-A new table named comment was created with the following fields:
-i. comment_id (unique identifier for each comment)
+A new table named review was created with the following fields:
+i. review_id (unique identifier for each review)
 ii. rating (numeric value representing user rating)
-iii. comment_text (content of the user’s review)
-iv. timestamp (records when the comment was posted)
-v. vehicle_id (links the comment to a specific vehicle)
-vi. commentator_id (identifies the user who posted the comment)
+iii. review_text (content of the user’s review)
+iv. timestamp (records when the review was posted)
+v. vehicle_id (links the review to a specific vehicle)
+vi. reviewer_id (identifies the user who posted the review)
 An asynchronous function was added to the inventory-model file to retrieve and manage data from this table.
 
 2. Updated Model Functionalities
-A new SQL query was implemented in the inventoryModel file to interact with the comment table.
+A new SQL query was implemented in the inventoryModel file to interact with the review table.
 
 3. Updated Controller Functionalities
-The inventoryController file now includes functions for retrieving and submitting comments.
-Additional POST and GET routes were integrated into the inventoryRoute file for handling comment-related requests.
+The inventoryController file now includes functions for retrieving and submitting reviews.
+Additional POST and GET routes were integrated into the inventoryRoute file for handling review-related requests.
 
 4. New User Interface Elements
-A comments link was appended to the templates function within the Utilities root file.
-A dedicated EJS file was introduced in the inventory directory to render comments for users.
+A review link was appended to the templates function within the Utilities root file.
+A dedicated EJS file was introduced in the inventory directory to render reviews for users.
 
 5. Input Validation
-Client-side validation was enforced in the EJS comment file using the required attribute to prevent empty submissions.
-Server-side validation was introduced to ensure data integrity, providing error messages when necessary. The checkCommentData function, added to the inventory-validation file, handles this.
+Client-side validation was enforced in the EJS review file using the required attribute to prevent empty submissions.
+Server-side validation was introduced to ensure data integrity, providing error messages when necessary. The checkReviewData function, added to the inventory-validation file, handles this.
 
 6. Error Handling
 Middleware for handling errors was implemented to improve system stability and provide meaningful feedback to users.

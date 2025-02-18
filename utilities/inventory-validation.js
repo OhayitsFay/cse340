@@ -132,12 +132,12 @@ validate.checkUpdateData = async (req, res, next) => {
   next()
 }
 
-validate.commentRules = () => {
+validate.reviewRules = () => {
   return [
-    body("comment_text")
+    body("review_text")
     .trim()
     .escape()
-    .notEmpty().withMessage('Comment required.'),
+    .notEmpty().withMessage('Review required.'),
     body("rating")
     .trim()
     .escape()
@@ -147,34 +147,34 @@ validate.commentRules = () => {
   ]
 }
 
-validate.checkCommmentData = async (req, res, next) => {
+validate.checkReviewData = async (req, res, next) => {
   const inv_id = parseInt(req.body.vehicle_id)
   let nav = await utilities.getNav()
   const inventory = await inventoryModel.getInventoryById(inv_id)
   const title = `${inventory.inv_make} ${inventory.inv_model} ${inventory.inv_year}`
   const vehicleBanner = inventory.inv_image
-  const comments = await inventoryModel.getComments(inv_id)
+  const reviews = await inventoryModel.getReviews(inv_id)
   let averageRating = 0
-  if(comments.length > 0) {
-    averageRating = parseFloat(comments[0].average_rating).toFixed(1)
+  if(reviews.length > 0) {
+    averageRating = parseFloat(reviews[0].average_rating).toFixed(1)
   }
   const {
-    rating, comment_text
+    rating, review_text
   } = req.body
   let errors = []
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    res.render("inventory/comments", {
+    res.render("inventory/reviews", {
       nav,
       errors,
       title,
       vehicleBanner,
       averageRating,
-      comments,
+      reviews,
       vehicle_id: inventory.inv_id,
       rating,
-      comment_text
+      review_text
     })
     return
   }
